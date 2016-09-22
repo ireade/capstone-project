@@ -1,0 +1,16 @@
+{{#each items}}
+<article class="excerpt">
+    <header class="excerpt__header">
+        <h3>{{title}}</h3>
+        <date class="excerpt__meta">{{moment pubDate}}</date>
+    </header>
+
+    <div class="excerpt__content">
+        {{{description}}}
+    </div>
+    <div class="excerpt__footer">
+        <a href="article.html?guid={{guid}}" class="btn btn-default">Read</a>
+        <button class="btn btn-default">Save</button>
+    </div>
+</article>
+{{/each}}
