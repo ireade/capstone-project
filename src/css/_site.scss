@@ -58,8 +58,23 @@
 		align-items: center;
 		justify-content: center;
 
-		.fill {
-			fill: rgb(200,200,200);
+		color: rgb(200,200,200);
+
+		.fa {
+			font-size: 2.3rem;
+			display: block;
+		}
+
+	}
+
+	li.active,
+	li:hover {
+
+		.fa {
+			color: $theme;
+		}
+		span {
+			color: #000;
 		}
 	}
 
@@ -80,15 +95,12 @@
 		padding-top: 2px;
 	}
 
-	li.active,
-	li:hover {
-		.fill {
-			fill: $theme;
-		}
-	}
-
+	transition: transform 1s;
 }
 
+.site-nav.hidden {
+	transform: translateY(100%);
+}
 
 
 /* Page */

@@ -5,16 +5,18 @@ function IDB() {
 IDB.prototype._setupDB = function() {
     if (!navigator.serviceWorker) { return Promise.reject(); }
 
-    return idb.open('offlineFX', 1, function(upgradeDb) {
+    return idb.open('bitsofcode', 1, function(upgradeDb) {
 
-        const FXStore = upgradeDb.createObjectStore('FX', {
-          keyPath: 'clientTimestamp'
+        const ArticlesStore = upgradeDb.createObjectStore('Articles', {
+          keyPath: 'guid'
         });
-        FXStore.createIndex('url', 'url');
+        ArticlesStore.createIndex('guid', 'guid');
+        ArticlesStore.createIndex('pubDate', 'pubDate');
 
-        const currenciesStore = upgradeDb.createObjectStore('Currencies', {
-          keyPath: 'full'
+        const SettingsStore = upgradeDb.createObjectStore('Settings', {
+            keyPath: 'setting'
         });
+
         
     });
 };
@@ -27,6 +29,28 @@ IDB.prototype.add = function(dbStore, data) {
         return tx.complete;
     });
 };
+
+
+IDB.prototype.search = function(dbStore, dbIndex, searchKey, searchValue) {
+    let results = [];
+    return this._dbPromise.then( function(db) {
+        const tx = db.transaction(dbStore, 'readwrite');
+        const store = tx.objectStore(dbStore);
+
+        if ( !dbIndex ) { return store.openCursor(); }
+        const index = store.index(dbIndex);
+        return index.openCursor();
+    })
+        .then(function findItem(cursor) {
+            if (!cursor) return;
+            if ( cursor.value[searchKey] == searchValue ) {
+                results.push(cursor.value);
+            }
+            return cursor.continue().then(findItem);
+        })
+        .then(function() { return results; })
+};
+
 
 IDB.prototype.remove = function(dbStore, dbIndex, searchKey, searchValue) {
     return this._dbPromise.then( function(db) {
@@ -52,7 +76,7 @@ IDB.prototype.retrieve = function(dbStore, dbIndex, check) {
         const tx = db.transaction(dbStore);
         const store = tx.objectStore(dbStore);
 
-        if ( !dbIndex ) { return store.getAll(); }
+        if ( !check ) { return store.getAll(); }
 
         const index = store.index(dbIndex);
         return index.getAll(check);

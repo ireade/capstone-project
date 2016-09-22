@@ -1,10 +1,45 @@
 const bitsofcode_rss_to_api_url = 'http://rss2json.com/api.json?rss_url=https://bitsofco.de/rss/';
 
 
+/* Database */
+
+const Database = new IDB();
+
+
+/* */
+
+function toggleBookmark(buttonElement) {
+    console.log("toggle");
+
+    const guid = buttonElement.getAttribute('data-guid');
+
+    function updateBookmarkStatus(article) {
+        article.isBookmarked = !article.isBookmarked;
+        Database.add('Articles', article)
+            .then(() => {
+                console.log("done");
+                buttonElement.classList.toggle('btn-bookmark--bookmarked');
+            });
+    }
+
+    Database.retrieve('Articles', 'guid', guid)
+        .then((articles) => {
+            return articles[0];
+        })
+        .then((article) => {
+            updateBookmarkStatus(article);
+        });
+}
+
+
+
 /* HANDLEBARS HELPERS */
 
-Handlebars.registerHelper('escape_html', function (value, options) {
-    return value;
+Handlebars.registerHelper('excerpt', function (excerpt, options) {
+
+    excerpt = excerpt + '...';
+
+    return excerpt;
 });
 
 Handlebars.registerHelper('moment', function (value, options) {
@@ -20,3 +55,34 @@ Handlebars.registerHelper('moment', function (value, options) {
 
     return m;
 });
+
+
+
+/* UI Stuff */
+
+const navigation = document.querySelector('.site-nav');
+
+function displayNavigationTemplate(option) {
+    navigation.innerHTML = MyApp.templates.nav(option);
+}
+
+
+
+let lastScrollPosition = 0;
+window.onscroll = () => {
+    const newScrollPosition = window.scrollY;
+    const difference = lastScrollPosition - newScrollPosition;
+    const differenceIsSignificant = difference > 10 | difference < -10;
+    const scrollingUp = newScrollPosition < lastScrollPosition;
+    const scrollingDown = newScrollPosition > lastScrollPosition;
+
+    if ( differenceIsSignificant ) {
+        if ( scrollingUp ) {
+            navigation.classList.remove('hidden');
+        } else if ( scrollingDown ) {
+            navigation.classList.add('hidden');
+        }
+    }
+
+    lastScrollPosition = newScrollPosition;
+}

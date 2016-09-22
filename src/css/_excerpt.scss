@@ -3,7 +3,13 @@
 .excerpt {
   background: #fff;
   text-align: left;
+
+
+  width: 95%;
+  margin: 0 auto;
   margin-bottom: 40px;
+
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.04);
 }
 
 .excerpt__header,
@@ -14,7 +20,11 @@
 
 .excerpt__header {
   background: $theme;
+  text-align: center;
+}
 
+.excerpt__title {
+  margin-bottom: 10px;
 }
 
 .excerpt__meta {
@@ -23,9 +33,20 @@
   font-size: 1.3rem;
 }
 
+date.excerpt__meta {
+  margin-right: 10px;
+}
+
+.excerpt__meta__category:not(:last-child):after {
+  content: ',';
+}
+
 .excerpt__content {
-  img {
-    width: 100%;
+  img,
+  pre,
+  h2,
+  h3 {
+    display: none;
   }
 }
 
@@ -35,3 +56,5 @@
   display: flex;
   justify-content: space-between;
 }
+
+
