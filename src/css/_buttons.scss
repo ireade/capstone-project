@@ -51,6 +51,17 @@ a.btn {
   background: $bg-clr;
 }
 
+.btn-share-twitter {
+  background: #00aced;
+  color: $bg-clr;
+}
+.btn-share-twitter:hover,
+.btn-share-twitter:focus {
+  outline: none;
+  background: $theme;
+  color: #000;
+}
+
 .btn-large {
   width: 100%;
   display: block;

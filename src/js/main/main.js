@@ -18,6 +18,8 @@ function toggleBookmark(buttonElement) {
         Database.retrieve('Articles', 'guid', guid)
             .then((articles) => {
                 const article = articles[0];
+                article.isBookmarked = true;
+                Database.add('Articles', article);
                 Database.add('Bookmarks', article).then(() => toggleButtonClass());
             })
     }
@@ -28,11 +30,25 @@ function toggleBookmark(buttonElement) {
 
     Database.retrieve('Bookmarks', 'guid', guid)
         .then((articles) => {
+            console.log( articles );
             if ( articles.length === 0 ) return addArticleToBookmarks();
             removeArticleFromBookmarks();
         });
 }
 
+
+
+/* **************
+
+  General Helper Functions
+
+ *************** */
+
+function sortedArticles(unsortedArticles) {
+    return unsortedArticles.sort(function(a,b){
+        return new Date(b.pubDate) - new Date(a.pubDate);
+    });
+}
 
 /* **************
 
@@ -42,7 +58,10 @@ Handlebars Helpers
 
 Handlebars.registerHelper('excerpt', function (excerpt, options) {
 
-    excerpt = excerpt + '...';
+    const lastParagraphIndex = excerpt.lastIndexOf("</p>");
+
+    excerpt = excerpt.slice(0, lastParagraphIndex) + '....' + excerpt.slice(lastParagraphIndex);
+
 
     return excerpt;
 });

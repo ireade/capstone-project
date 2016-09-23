@@ -30,10 +30,6 @@ h4 {
 }
 
 
-h3 {
-    font-size: 1.8rem;
-}
-
 a {
     text-decoration: underline;
     color: inherit; 
@@ -47,6 +43,11 @@ small {
     font-size: 1.2rem;
     font-family: $sans-serif;
     font-style: italic;
+}
+
+pre,code {
+    font-family: $monospace;
+    font-size: 1.4rem;
 }
 
 p {
@@ -80,6 +81,10 @@ p {
 }
 .article__title {
     padding-bottom: 10px;
+}
+
+.excerpt__title {
+    font-size: 1.7rem;
 }
 
 .site-nav a {

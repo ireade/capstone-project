@@ -58,17 +58,24 @@
 		align-items: center;
 		justify-content: center;
 
-		color: rgb(200,200,200);
+
+
+		span {
+			color: #767676;
+		}
 
 		.fa {
 			font-size: 2.3rem;
 			display: block;
+			color: rgb(200,200,200);
 		}
 
 	}
 
-	li.active,
-	li:hover {
+	li.active a,
+	li:hover a,
+	a:focus {
+		outline: none;
 
 		.fa {
 			color: $theme;
@@ -76,6 +83,10 @@
 		span {
 			color: #000;
 		}
+	}
+	li:hover a,
+	a:focus {
+		background: rgba(200,200,200,0.2);
 	}
 
 	li a {

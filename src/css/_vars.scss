@@ -20,12 +20,12 @@ $drop-shadow-clr: rgba(167,156,142,0.52);
 $box-shadow: 0px 2px 4px 0px #67AEE8;
 
 
+@import 'https://fonts.googleapis.com/css?family=Inconsolata|Lora:400,400i,700|Source+Sans+Pro:400,700';
 
-@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,300italic,700,900,900italic,700italic,400italic);
-$font: 'Source Sans Pro', sans-serif;
+$serif: 'Lora', serif;
+$sans-serif: 'Source Sans Pro', sans-serif;
+$monospace: 'Inconsolata', monospace;
 
-$serif: 'Lora';
-$sans-serif: 'Proxima Nova';
 
 
 $fabPosition: 30px;

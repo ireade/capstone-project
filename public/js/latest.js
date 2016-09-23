@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -27,17 +27,30 @@ var didFetchArticlesFromDatabase = false;
 /* Database Functions */
 function addToDatabase(article) {
     return new Promise(function (resolve, reject) {
-        Database.add('Articles', article).then(function () {
-            resolve(article);
+        Database.retrieve('Articles', 'guid', article.guid).then(function (articles) {
+            if (articles.length === 1) return resolve(article);
+            Database.add('Articles', article).then(function () {
+                resolve(article);
+            });
         });
     });
 }
 function clearDatabase() {
-    console.log("clearDatabase");
-    // @todo
-    // 1 - get all Articles from database
-    // 2 - get the 15 most recent articles
-    // 3 - delete the rest
+    function removeArticle(guid) {
+        Database.remove('Articles', false, 'guid', guid);
+    }
+    Database.retrieve('Articles', 'pubDate').then(function (articlesFromDatabase) {
+        Articles = sortedArticles(articlesFromDatabase);
+        var guidsOfArticlesToDelete = [];
+        for (var i = 10; i < Articles.length; i++) {
+            guidsOfArticlesToDelete.push(Articles[i].guid);
+        }
+        return Promise.resolve(guidsOfArticlesToDelete);
+    }).then(function (guids) {
+        guids.forEach(function (guid) {
+            return removeArticle;
+        });
+    });
 }
 
 /* Getting Articles, Updating in Background, etc */
@@ -98,7 +111,7 @@ Database.retrieve('Articles', 'pubDate').then(function (articlesFromDatabase) {
     didFetchArticlesFromDatabase = true;
     return Promise.resolve(articlesFromDatabase);
 }).then(function (articles) {
-    Articles = articles;
+    Articles = sortedArticles(articles);
     var html = MyApp.templates.excerpt({ items: articles });
     document.getElementById('excerpts').innerHTML = html;
     return Promise.resolve();

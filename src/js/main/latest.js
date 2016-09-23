@@ -22,16 +22,27 @@ let didFetchArticlesFromDatabase = false;
 /* Database Functions */
 function addToDatabase(article) {
     return new Promise((resolve, reject) => {
-        Database.add('Articles', article)
-            .then(() => { resolve(article) });
+        Database.retrieve('Articles', 'guid', article.guid)
+            .then((articles) => {
+                if ( articles.length === 1 ) return resolve(article)
+                Database.add('Articles', article).then(() => { resolve(article) });
+            })
     })
 }
 function clearDatabase() {
-    console.log("clearDatabase");
-    // @todo
-    // 1 - get all Articles from database
-    // 2 - get the 15 most recent articles
-    // 3 - delete the rest
+    function removeArticle(guid) {
+        Database.remove('Articles', false, 'guid', guid)
+    }
+    Database.retrieve('Articles', 'pubDate')
+        .then((articlesFromDatabase) => {
+            Articles = sortedArticles(articlesFromDatabase);
+            const guidsOfArticlesToDelete = [];
+            for (let i = 10; i < Articles.length; i++) {
+                guidsOfArticlesToDelete.push( Articles[i].guid );
+            }
+            return Promise.resolve(guidsOfArticlesToDelete)
+        })
+        .then((guids) => { guids.forEach(guid => removeArticle) })
 }
 
 /* Getting Articles, Updating in Background, etc */
@@ -89,7 +100,7 @@ Database.retrieve('Articles', 'pubDate')
         return Promise.resolve(articlesFromDatabase);
     })
     .then((articles) => {
-        Articles = articles;
+        Articles = sortedArticles(articles);
         const html = MyApp.templates.excerpt({items: articles});
         document.getElementById('excerpts').innerHTML = html;
         return Promise.resolve();
