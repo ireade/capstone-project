@@ -1,6 +1,6 @@
 'use strict';
 
-var bitsofcode_rss_to_api_url = 'http://rss2json.com/api.json?rss_url=https://bitsofco.de/rss/';
+var bitsofcode_rss_to_api_url = 'https://rss2json.com/api.json?rss_url=https://bitsofco.de/rss/';
 var Database = new IDB();
 var myNotificationsService = void 0;
 

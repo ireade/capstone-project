@@ -1,4 +1,4 @@
-const bitsofcode_rss_to_api_url = 'http://rss2json.com/api.json?rss_url=https://bitsofco.de/rss/';
+const bitsofcode_rss_to_api_url = 'https://rss2json.com/api.json?rss_url=https://bitsofco.de/rss/';
 const Database = new IDB();
 let myNotificationsService;
 
