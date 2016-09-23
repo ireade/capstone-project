@@ -49,15 +49,3 @@ NotificationsService.prototype._sendUIDToAPI = function() {
             console.log("Succesfully added uid");
         })
 };
-
-
-
-
-// if ('serviceWorker' in navigator) {
-//     navigator.serviceWorker.register('./sw.js').then(function (registration) {
-//         myNotifications = new Notifications(registration);
-//         myNotifications.subscribe();
-//     }).catch(function (error) {
-//         console.log('Service Worker Error :^(', error);
-//     });
-// }

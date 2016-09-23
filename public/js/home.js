@@ -1,24 +1,18 @@
 'use strict';
 
-/* **************************
-
-    Home
-
-************************** */
-
-/* **************
-    Key Elements
-*************** */
-
 displayNavigationTemplate({ isHome: true });
 
 /* **************
- Key Elements
+
+ Local Publish Time
+
  *************** */
+var setTimezoneLink = document.querySelector('.setTimezoneLink');
+var localTimeElement = document.querySelector('.localTime');
 
 function getLocalPublishTime(coords) {
+    var url = 'http://api.timezonedb.com/v2/get-time-zone?key=7KIGVA90V0ES&format=json&by=position&lat=' + coords.latitude + '&lng=' + coords.longitude;
     return new Promise(function (resolve) {
-        var url = 'http://api.timezonedb.com/v2/get-time-zone?key=7KIGVA90V0ES&format=json&by=position&lat=' + coords.latitude + '&lng=' + coords.longitude;
         return fetch(url).then(function (response) {
             return response.json();
         }).then(function (response) {
@@ -41,18 +35,15 @@ function addPublishTimeToDatabase(time) {
 function getPublishTimeSetting() {
     return new Promise(function (resolve, reject) {
         Database.search('Settings', false, 'setting', 'publishTime').then(function (publishTimeSetting) {
-            resolve(publishTimeSetting);
+            return resolve(publishTimeSetting);
         }).catch(function (err) {
-            reject(err);
+            return reject(err);
         });
     });
 }
 
-var setTimezoneLink = document.querySelector('.setTimezoneLink');
-var localTimeElement = document.querySelector('.localTime');
-
 function displayLocalTime(localPublishTime) {
-    localTimeElement.innerHTML = 'That\'s ' + localPublishTime;
+    localTimeElement.innerHTML = 'That\'s ' + localPublishTime + '.';
     setTimezoneLink.innerHTML = 'Reset Local Time';
 }
 
@@ -77,28 +68,25 @@ getPublishTimeSetting().then(function (publishTimeSetting) {
  Push Notifications
 
  *************** */
+var notificationsButton = document.querySelector('.btn-notifications');
+
 function getNotificationsSetting() {
     return new Promise(function (resolve, reject) {
         Database.search('Settings', false, 'setting', 'allowNotifications').then(function (notificationsSetting) {
-            resolve(notificationsSetting);
+            return resolve(notificationsSetting);
         }).catch(function (err) {
-            reject(err);
+            return reject(err);
         });
     });
 }
 
 function toggleNotificationsSetting() {
     getNotificationsSetting().then(function (notificationsSetting) {
-
         if (notificationsSetting.length === 0) {
-            notificationsSetting = {
-                setting: 'allowNotifications',
-                value: false
-            };
+            notificationsSetting = { value: false };
         } else {
             notificationsSetting = notificationsSetting[0];
         }
-
         var newSetting = {
             setting: 'allowNotifications',
             value: !notificationsSetting.value
@@ -108,40 +96,13 @@ function toggleNotificationsSetting() {
     });
 }
 
-var notificationsButton = document.querySelector('.btn-notifications');
 notificationsButton.addEventListener('click', function () {
     toggleNotificationsSetting();
 });
 
 getNotificationsSetting().then(function (notificationsSetting) {
-    if (notificationsSetting.length === 0) {
-        return;
-    }
+    if (notificationsSetting.length === 0) return;
     if (notificationsSetting[0].value === true) {
         notificationsButton.classList.add('btn-notifications--on');
     }
 });
-
-/* **************
-    Service Worker
-
-*************** */
-
-// if ( !('serviceWorker' in navigator) ) {
-//
-//     new Toast('error', "Your browser doesn't support some great features to really take advantage of this application. Why not try using Chrome instead?");
-//
-// } else {
-//
-//     myFX.init();
-//
-//     navigator.serviceWorker
-//     .register('./service-worker.js')
-//     .then(function(reg) {
-//         console.log('Service Worker Registered', reg);
-//     })
-//     .catch(function(err) {
-//         console.log('Service Worker Failed to Register', err);
-//     });
-//
-// }

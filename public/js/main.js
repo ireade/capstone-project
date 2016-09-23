@@ -1,15 +1,15 @@
 'use strict';
 
 var bitsofcode_rss_to_api_url = 'http://rss2json.com/api.json?rss_url=https://bitsofco.de/rss/';
-
-/* Database */
-
 var Database = new IDB();
+var myNotificationsService = void 0;
 
-/* */
+/* **************
 
+    Bookmark Article
+
+ *************** */
 function toggleBookmark(buttonElement) {
-
     var guid = buttonElement.getAttribute('data-guid');
 
     function toggleButtonClass() {
@@ -37,7 +37,11 @@ function toggleBookmark(buttonElement) {
     });
 }
 
-/* HANDLEBARS HELPERS */
+/* **************
+
+Handlebars Helpers
+
+ *************** */
 
 Handlebars.registerHelper('excerpt', function (excerpt, options) {
 
@@ -47,20 +51,21 @@ Handlebars.registerHelper('excerpt', function (excerpt, options) {
 });
 
 Handlebars.registerHelper('moment', function (value, options) {
-
     var rawDate = value;
-
     var m = moment(rawDate).calendar(null, {
         sameDay: '[Today]',
         lastDay: '[Yesterday]',
         lastWeek: '[Last] dddd',
         sameElse: 'MMM Do, YYYY'
     });
-
     return m;
 });
 
-/* UI Stuff */
+/* **************
+
+    UI Stuff
+
+ *************** */
 
 var navigation = document.querySelector('.site-nav');
 
@@ -86,3 +91,18 @@ window.onscroll = function () {
 
     lastScrollPosition = newScrollPosition;
 };
+
+/* **************
+
+ Service Worker
+
+ *************** */
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js').then(function (reg) {
+        console.log('Service Worker Registered', reg);
+        myNotificationsService = new NotificationsService(reg);
+    }).catch(function (err) {
+        console.log('Service Worker Failed to Register', err);
+    });
+}

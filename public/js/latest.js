@@ -1,8 +1,10 @@
-'use strict';
+"use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 displayNavigationTemplate({ isLatest: true });
+
+/* Classes and Variables */
 
 var Article = function Article(options) {
     _classCallCheck(this, Article);
@@ -19,6 +21,10 @@ var Article = function Article(options) {
     this.isBookmarked = false;
 };
 
+var Articles = [];
+var didFetchArticlesFromDatabase = false;
+
+/* Database Functions */
 function addToDatabase(article) {
     return new Promise(function (resolve, reject) {
         Database.add('Articles', article).then(function () {
@@ -26,9 +32,16 @@ function addToDatabase(article) {
         });
     });
 }
+function clearDatabase() {
+    console.log("clearDatabase");
+    // @todo
+    // 1 - get all Articles from database
+    // 2 - get the 15 most recent articles
+    // 3 - delete the rest
+}
 
+/* Getting Articles, Updating in Background, etc */
 function fetchArticles() {
-
     var fetchedArticles = void 0;
     return fetch(bitsofcode_rss_to_api_url).then(function (response) {
         return response.json();
@@ -40,11 +53,10 @@ function fetchArticles() {
         });
     }).then(function (Articles) {
         fetchedArticles = Articles;
-
         var sequence = Promise.resolve();
         Articles.forEach(function (article) {
-            sequence = sequence.then(function () {
-                addToDatabase(article);
+            return sequence = sequence.then(function () {
+                return addToDatabase(article);
             });
         });
         return sequence;
@@ -52,24 +64,38 @@ function fetchArticles() {
         return fetchedArticles;
     });
 }
-
-var Articles = [];
-
 function checkForNewArticles() {
-    // return new Promise((resolve) => {
-    //
-    //     fetchArticles()
-    //         .then((articles) => {
-    //             console.log(articles);
-    //         })
-    //
-    // })
+    function isNewArticle(article) {
+        Articles.find(function (oldArticle) {
+            if (oldArticle.title === article.title) return false;
+            return true;
+        });
+    }
+    var newArticles = [];
+    return new Promise(function (resolve, reject) {
+        fetchArticles().then(function (articles) {
+            articles.forEach(function (article) {
+                if (isNewArticle(article)) newArticles.push(article);
+            });
+            resolve(newArticles);
+        }).catch(function (err) {
+            return reject(err);
+        });
+    });
+}
+function updateArticlesInBackground() {
+    checkForNewArticles().then(function (newArticles) {
+        console.log(newArticles);
+        if (newArticles.length === 0) return;
+        Articles.unshift(newArticles);
+        clearDatabase();
+    });
 }
 
+/* Start */
 Database.retrieve('Articles', 'pubDate').then(function (articlesFromDatabase) {
-    if (articlesFromDatabase.length == 0) {
-        return fetchArticles();
-    }
+    if (articlesFromDatabase.length == 0) return fetchArticles();
+    didFetchArticlesFromDatabase = true;
     return Promise.resolve(articlesFromDatabase);
 }).then(function (articles) {
     Articles = articles;
@@ -77,6 +103,5 @@ Database.retrieve('Articles', 'pubDate').then(function (articlesFromDatabase) {
     document.getElementById('excerpts').innerHTML = html;
     return Promise.resolve();
 }).then(function () {
-    console.log(Articles);
-    return checkForNewArticles();
+    if (didFetchArticlesFromDatabase) updateArticlesInBackground();
 });
