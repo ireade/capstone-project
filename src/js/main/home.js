@@ -16,10 +16,6 @@ displayNavigationTemplate({isHome: true});
  Key Elements
  *************** */
 
-
-
-
-
 function getLocalPublishTime(coords) {
     return new Promise((resolve) => {
         const url = `http://api.timezonedb.com/v2/get-time-zone?key=7KIGVA90V0ES&format=json&by=position&lat=${coords.latitude}&lng=${coords.longitude}`;
@@ -28,13 +24,11 @@ function getLocalPublishTime(coords) {
             .then(response => {
                 let localTimeOnTuesday = 1474365600 - response.gmtOffset;
                 localTimeOnTuesday = moment.unix(localTimeOnTuesday).format('ha');
-                localTimeOnTuesday = `${localTimeOnTuesday} ${response.nextAbbreviation}`;
+                localTimeOnTuesday = `${localTimeOnTuesday} ${response.nextAbbreviation ? response.nextAbbreviation : `in ${response.countryName}` }`;
                 resolve(localTimeOnTuesday);
             })
         });
 }
-
-
 
 function addPublishTimeToDatabase(time) {
     const setting = {
@@ -58,8 +52,6 @@ function getPublishTimeSetting() {
 }
 
 
-
-
 const setTimezoneLink = document.querySelector('.setTimezoneLink');
 const localTimeElement = document.querySelector('.localTime');
 
@@ -72,15 +64,13 @@ setTimezoneLink.addEventListener('click', function(e) {
     e.preventDefault();
     setTimezoneLink.innerHTML = 'Checking...';
     navigator.geolocation.getCurrentPosition(function(position) {
-        console.log(position.coords);
-        getLocalPublishTime({latitude: 39.6034810, longitude: -119.6822510})
+        getLocalPublishTime(position.coords)
             .then((localPublishTime) => {
                 addPublishTimeToDatabase(localPublishTime);
                 displayLocalTime(localPublishTime);
             })
     });
 });
-
 
 getPublishTimeSetting()
     .then((publishTimeSetting) => {

@@ -24,7 +24,7 @@ function getLocalPublishTime(coords) {
         }).then(function (response) {
             var localTimeOnTuesday = 1474365600 - response.gmtOffset;
             localTimeOnTuesday = moment.unix(localTimeOnTuesday).format('ha');
-            localTimeOnTuesday = localTimeOnTuesday + ' ' + response.nextAbbreviation;
+            localTimeOnTuesday = localTimeOnTuesday + ' ' + (response.nextAbbreviation ? response.nextAbbreviation : 'in ' + response.countryName);
             resolve(localTimeOnTuesday);
         });
     });
@@ -60,8 +60,7 @@ setTimezoneLink.addEventListener('click', function (e) {
     e.preventDefault();
     setTimezoneLink.innerHTML = 'Checking...';
     navigator.geolocation.getCurrentPosition(function (position) {
-        console.log(position.coords);
-        getLocalPublishTime({ latitude: 39.6034810, longitude: -119.6822510 }).then(function (localPublishTime) {
+        getLocalPublishTime(position.coords).then(function (localPublishTime) {
             addPublishTimeToDatabase(localPublishTime);
             displayLocalTime(localPublishTime);
         });
