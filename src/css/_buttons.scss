@@ -59,6 +59,9 @@ a.btn {
 }
 
 
+
+/* Bookmark Button */
+
 .btn-bookmark {
   .isBookmarked {
     display: none;
@@ -71,6 +74,24 @@ a.btn {
   }
   .isNotBookmarked {
     display: none;
+  }
+}
+
+
+/* Notifications Buttson */
+
+.btn-notifications {
+  .notificationsOn {
+    display: none;
+  }
+}
+
+.btn-notifications--on {
+  .notificationsOff {
+    display: none;
+  }
+  .notificationsOn {
+    display: block;
   }
 }
 

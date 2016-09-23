@@ -9,25 +9,29 @@ const Database = new IDB();
 /* */
 
 function toggleBookmark(buttonElement) {
-    console.log("toggle");
 
     const guid = buttonElement.getAttribute('data-guid');
 
-    function updateBookmarkStatus(article) {
-        article.isBookmarked = !article.isBookmarked;
-        Database.add('Articles', article)
-            .then(() => {
-                console.log("done");
-                buttonElement.classList.toggle('btn-bookmark--bookmarked');
-            });
+    function toggleButtonClass() {
+        buttonElement.classList.toggle('btn-bookmark--bookmarked');
     }
 
-    Database.retrieve('Articles', 'guid', guid)
+    function addArticleToBookmarks() {
+        Database.retrieve('Articles', 'guid', guid)
+            .then((articles) => {
+                const article = articles[0];
+                Database.add('Bookmarks', article).then(() => toggleButtonClass());
+            })
+    }
+
+    function removeArticleFromBookmarks() {
+        Database.remove('Bookmarks', false, 'guid', guid).then(() => toggleButtonClass());
+    }
+
+    Database.retrieve('Bookmarks', 'guid', guid)
         .then((articles) => {
-            return articles[0];
-        })
-        .then((article) => {
-            updateBookmarkStatus(article);
+            if ( articles.length === 0 ) return addArticleToBookmarks();
+            removeArticleFromBookmarks();
         });
 }
 

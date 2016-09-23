@@ -9,22 +9,31 @@ var Database = new IDB();
 /* */
 
 function toggleBookmark(buttonElement) {
-    console.log("toggle");
 
     var guid = buttonElement.getAttribute('data-guid');
 
-    function updateBookmarkStatus(article) {
-        article.isBookmarked = !article.isBookmarked;
-        Database.add('Articles', article).then(function () {
-            console.log("done");
-            buttonElement.classList.toggle('btn-bookmark--bookmarked');
+    function toggleButtonClass() {
+        buttonElement.classList.toggle('btn-bookmark--bookmarked');
+    }
+
+    function addArticleToBookmarks() {
+        Database.retrieve('Articles', 'guid', guid).then(function (articles) {
+            var article = articles[0];
+            Database.add('Bookmarks', article).then(function () {
+                return toggleButtonClass();
+            });
         });
     }
 
-    Database.retrieve('Articles', 'guid', guid).then(function (articles) {
-        return articles[0];
-    }).then(function (article) {
-        updateBookmarkStatus(article);
+    function removeArticleFromBookmarks() {
+        Database.remove('Bookmarks', false, 'guid', guid).then(function () {
+            return toggleButtonClass();
+        });
+    }
+
+    Database.retrieve('Bookmarks', 'guid', guid).then(function (articles) {
+        if (articles.length === 0) return addArticleToBookmarks();
+        removeArticleFromBookmarks();
     });
 }
 

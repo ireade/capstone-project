@@ -20,9 +20,11 @@ this["MyApp"]["templates"]["article"] = Handlebars.template({"1":function(depth0
 this["MyApp"]["templates"]["excerpt"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
     var stack1, helper, alias1=helpers.helperMissing, alias2="function", alias3=this.escapeExpression;
 
-  return "<article class=\"excerpt\">\n    <header class=\"excerpt__header\">\n        <h3 class=\"excerpt__title\">"
+  return "<article class=\"excerpt\">\n    <header class=\"excerpt__header\">\n        <h3 class=\"excerpt__title\">\n            <a href=\"article.html?guid="
+    + alias3(((helper = (helper = helpers.guid || (depth0 != null ? depth0.guid : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"guid","hash":{},"data":data}) : helper)))
+    + "\">"
     + alias3(((helper = (helper = helpers.title || (depth0 != null ? depth0.title : depth0)) != null ? helper : alias1),(typeof helper === alias2 ? helper.call(depth0,{"name":"title","hash":{},"data":data}) : helper)))
-    + "</h3>\n        <i class=\"fa fa-clock-o\"></i>\n        <date class=\"excerpt__meta\">"
+    + "</a>\n        </h3>\n        <i class=\"fa fa-clock-o\"></i>\n        <date class=\"excerpt__meta\">"
     + alias3((helpers.moment || (depth0 && depth0.moment) || alias1).call(depth0,(depth0 != null ? depth0.pubDate : depth0),{"name":"moment","hash":{},"data":data}))
     + "</date>\n        <i class=\"fa fa-tags\"></i>\n        <span class=\"excerpt__meta\">\n            "
     + ((stack1 = helpers.each.call(depth0,(depth0 != null ? depth0.categories : depth0),{"name":"each","hash":{},"fn":this.program(2, data, 0),"inverse":this.noop,"data":data})) != null ? stack1 : "")

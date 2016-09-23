@@ -4,7 +4,7 @@ displayNavigationTemplate({ isSaved: true });
 
 var excerptsEl = document.getElementById('excerpts');
 
-Database.search('Articles', false, 'isBookmarked', true).then(function (bookmarkedArticles) {
+Database.retrieve('Bookmarks', 'pubDate').then(function (bookmarkedArticles) {
     if (bookmarkedArticles.length == 0) {
 
         excerptsEl.innerHTML = "Looks like you haven't bookmarked any articles yet.";

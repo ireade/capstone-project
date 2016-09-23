@@ -1,5 +1,20 @@
 displayNavigationTemplate({isLatest: true});
 
+class Article {
+
+    constructor(options) {
+        this.title = options.title;
+        this.author = options.author;
+        this.categories = options.categories;
+        this.content = options.content;
+        this.description = options.description;
+        this.guid = options.guid;
+        this.link = options.link;
+        this.pubDate = new Date(options.pubDate).getTime();
+        this.thumbnail = options.thumbnail;
+        this.isBookmarked = false;
+    }
+}
 
 function addToDatabase(article) {
     return new Promise((resolve, reject) => {
@@ -11,7 +26,6 @@ function addToDatabase(article) {
 function fetchArticles() {
 
     let fetchedArticles;
-
     return fetch(bitsofcode_rss_to_api_url)
         .then((response) => response.json())
         .then((response) => {
@@ -36,30 +50,23 @@ function fetchArticles() {
 }
 
 
-class Article {
+let Articles = [];
 
-    constructor(options) {
-        this.title = options.title;
-        this.author = options.author;
-        this.categories = options.categories;
-        this.content = options.content;
-        this.description = options.description;
-        this.guid = options.guid;
-        this.link = options.link;
-        this.pubDate = new Date(options.pubDate).getTime();
-        this.thumbnail = options.thumbnail;
-        this.isBookmarked = false;
-    }
 
-    save() {
-        console.log("about to save - " + this.title);
-    }
+function checkForNewArticles() {
+    // return new Promise((resolve) => {
+    //
+    //     fetchArticles()
+    //         .then((articles) => {
+    //             console.log(articles);
+    //         })
+    //
+    // })
 }
 
 
 
-
-Database.retrieve('Articles')
+Database.retrieve('Articles', 'pubDate')
     .then((articlesFromDatabase) => {
         if (articlesFromDatabase.length == 0) {
             return fetchArticles();
@@ -67,9 +74,15 @@ Database.retrieve('Articles')
         return Promise.resolve(articlesFromDatabase);
     })
     .then((articles) => {
+        Articles = articles;
         const html = MyApp.templates.excerpt({items: articles});
         document.getElementById('excerpts').innerHTML = html;
-    });
+        return Promise.resolve();
+    })
+    .then(() => {
+        console.log(Articles);
+        return checkForNewArticles();
+    })
 
 
 

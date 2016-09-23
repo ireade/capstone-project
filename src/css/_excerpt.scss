@@ -25,6 +25,9 @@
 
 .excerpt__title {
   margin-bottom: 10px;
+  a {
+    text-decoration: none;
+  }
 }
 
 .excerpt__meta {

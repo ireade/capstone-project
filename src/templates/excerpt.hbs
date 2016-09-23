@@ -1,7 +1,9 @@
 {{#each items}}
 <article class="excerpt">
     <header class="excerpt__header">
-        <h3 class="excerpt__title">{{title}}</h3>
+        <h3 class="excerpt__title">
+            <a href="article.html?guid={{guid}}">{{title}}</a>
+        </h3>
         <i class="fa fa-clock-o"></i>
         <date class="excerpt__meta">{{moment pubDate}}</date>
         <i class="fa fa-tags"></i>

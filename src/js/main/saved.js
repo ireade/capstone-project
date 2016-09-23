@@ -2,7 +2,7 @@ displayNavigationTemplate({isSaved: true});
 
 const excerptsEl = document.getElementById('excerpts');
 
-Database.search('Articles', false, 'isBookmarked', true)
+Database.retrieve('Bookmarks', 'pubDate')
     .then((bookmarkedArticles) => {
         if ( bookmarkedArticles.length == 0 ) {
 

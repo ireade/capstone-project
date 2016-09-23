@@ -1,10 +1,23 @@
-"use strict";
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 displayNavigationTemplate({ isLatest: true });
+
+var Article = function Article(options) {
+    _classCallCheck(this, Article);
+
+    this.title = options.title;
+    this.author = options.author;
+    this.categories = options.categories;
+    this.content = options.content;
+    this.description = options.description;
+    this.guid = options.guid;
+    this.link = options.link;
+    this.pubDate = new Date(options.pubDate).getTime();
+    this.thumbnail = options.thumbnail;
+    this.isBookmarked = false;
+};
 
 function addToDatabase(article) {
     return new Promise(function (resolve, reject) {
@@ -17,7 +30,6 @@ function addToDatabase(article) {
 function fetchArticles() {
 
     var fetchedArticles = void 0;
-
     return fetch(bitsofcode_rss_to_api_url).then(function (response) {
         return response.json();
     }).then(function (response) {
@@ -41,38 +53,30 @@ function fetchArticles() {
     });
 }
 
-var Article = function () {
-    function Article(options) {
-        _classCallCheck(this, Article);
+var Articles = [];
 
-        this.title = options.title;
-        this.author = options.author;
-        this.categories = options.categories;
-        this.content = options.content;
-        this.description = options.description;
-        this.guid = options.guid;
-        this.link = options.link;
-        this.pubDate = new Date(options.pubDate).getTime();
-        this.thumbnail = options.thumbnail;
-        this.isBookmarked = false;
-    }
+function checkForNewArticles() {
+    // return new Promise((resolve) => {
+    //
+    //     fetchArticles()
+    //         .then((articles) => {
+    //             console.log(articles);
+    //         })
+    //
+    // })
+}
 
-    _createClass(Article, [{
-        key: "save",
-        value: function save() {
-            console.log("about to save - " + this.title);
-        }
-    }]);
-
-    return Article;
-}();
-
-Database.retrieve('Articles').then(function (articlesFromDatabase) {
+Database.retrieve('Articles', 'pubDate').then(function (articlesFromDatabase) {
     if (articlesFromDatabase.length == 0) {
         return fetchArticles();
     }
     return Promise.resolve(articlesFromDatabase);
 }).then(function (articles) {
+    Articles = articles;
     var html = MyApp.templates.excerpt({ items: articles });
     document.getElementById('excerpts').innerHTML = html;
+    return Promise.resolve();
+}).then(function () {
+    console.log(Articles);
+    return checkForNewArticles();
 });
