@@ -1,18 +1,4 @@
 /* Classes and Variables */
-class Article {
-    constructor(options) {
-        this.title = options.title;
-        this.author = options.author;
-        this.categories = options.categories;
-        this.content = options.content;
-        this.description = options.description;
-        this.guid = options.guid;
-        this.link = options.link;
-        this.pubDate = new Date(options.pubDate).getTime();
-        this.thumbnail = options.thumbnail;
-        this.isBookmarked = false;
-    }
-}
 let Articles = [];
 let didFetchArticlesFromDatabase = false;
 
@@ -44,24 +30,6 @@ function clearDatabase() {
 }
 
 /* Getting Articles, Updating in Background, etc */
-function fetchArticles() {
-    let fetchedArticles;
-    return fetch(bitsofcode_rss_to_api_url)
-        .then((response) => response.json())
-        .then((response) => {
-            let articles = response.items;
-            return articles.map((article) => new Article(article));
-        })
-        .then((Articles) => {
-            fetchedArticles = Articles;
-            let sequence = Promise.resolve();
-            Articles.forEach((article) => sequence = sequence.then(() => addToDatabase(article)) )
-            return sequence;
-        })
-        .then(() => {
-            return fetchedArticles;
-        })
-}
 function checkForNewArticles() {
     function isNewArticle(article) {
         Articles.find((oldArticle) => {
@@ -71,7 +39,7 @@ function checkForNewArticles() {
     }
     const newArticles = [];
     return new Promise((resolve, reject) => {
-        fetchArticles()
+        fetchArticles(true)
             .then((articles) => {
                 articles.forEach((article) => { if ( isNewArticle(article) ) newArticles.push(article) });
                 resolve(newArticles);
@@ -91,16 +59,39 @@ function updateArticlesInBackground() {
 }
 
 /* Start */
-Database.retrieve('Articles')
-    .then((articlesFromDatabase) => {
-        if (articlesFromDatabase.length == 0) return fetchArticles()
-        didFetchArticlesFromDatabase = true;
-        return Promise.resolve(articlesFromDatabase);
-    })
-    .then((articles) => {
-        Articles = sortedArticles(articles);
-        const html = MyApp.templates.excerpt({items: articles});
-        document.getElementById('excerpts').innerHTML = html;
-        return Promise.resolve();
-    })
-    .then(() => { if (didFetchArticlesFromDatabase) updateArticlesInBackground() });
+if ( 'serviceWorker' in navigator ) {
+
+    Database.retrieve('Articles')
+        .then((articlesFromDatabase) => {
+            if (articlesFromDatabase.length == 0) return fetchArticles(true)
+            didFetchArticlesFromDatabase = true;
+            return Promise.resolve(articlesFromDatabase);
+        })
+        .then((articles) => {
+            Articles = sortedArticles(articles);
+            const html = MyApp.templates.excerpt({items: articles});
+            document.getElementById('excerpts').innerHTML = html;
+            return Promise.resolve();
+        })
+        .then(() => { if (didFetchArticlesFromDatabase) updateArticlesInBackground() });
+
+} else {
+
+    fetchArticles(false)
+        .then((articles) => {
+            Articles = sortedArticles(articles);
+            const html = MyApp.templates.excerpt({items: articles});
+            document.getElementById('excerpts').innerHTML = html;
+            return Promise.resolve();
+        })
+        .then(() => {
+            const bookmarkButtons = Array.from( document.querySelectorAll('.btn-bookmark') )
+            console.log(bookmarkButtons);
+            bookmarkButtons.map((button) => {
+                button.disabled = true;
+            })
+
+        })
+}
+
+

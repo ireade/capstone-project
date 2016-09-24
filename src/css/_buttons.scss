@@ -119,4 +119,15 @@ button.a {
 }
 
 
+/* States */
+
+.btn[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.btn[disabled]:hover,
+.btn[disabled]:focus {
+  background-color: $bg-clr;
+}
 

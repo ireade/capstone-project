@@ -124,3 +124,8 @@ getNotificationsSetting().then(function (notificationsSetting) {
         notificationsButton.classList.add('btn-notifications--on');
     }
 });
+
+if (!('serviceWorker' in navigator)) {
+    var message = "<em>Unfortunately, your current browser doesn't support some of the features that make this app really awesome.</em> You can still use it like you would a normal website, but the offline features will not be available.";
+    document.querySelector('.notifications-section').innerHTML = message;
+}

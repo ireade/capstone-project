@@ -43,6 +43,38 @@ function toggleBookmark(buttonElement) {
   General Helper Functions
 
  *************** */
+class Article {
+    constructor(options) {
+        this.title = options.title;
+        this.author = options.author;
+        this.categories = options.categories;
+        this.content = options.content;
+        this.description = options.description;
+        this.guid = options.guid;
+        this.link = options.link;
+        this.pubDate = new Date(options.pubDate).getTime();
+        this.thumbnail = options.thumbnail;
+        this.isBookmarked = false;
+    }
+}
+function fetchArticles(saveToDatabase) {
+    let fetchedArticles;
+    return fetch(bitsofcode_rss_to_api_url)
+        .then((response) => response.json())
+        .then((response) => {
+            let articles = response.items;
+            return articles.map((article) => new Article(article));
+        })
+        .then((Articles) => {
+            fetchedArticles = Articles;
+            let sequence = Promise.resolve();
+            if (saveToDatabase) Articles.forEach((article) => sequence = sequence.then(() => addToDatabase(article)) )
+            return sequence;
+        })
+        .then(() => {
+            return fetchedArticles;
+        })
+}
 function sortedArticles(unsortedArticles) {
     return unsortedArticles.sort(function(a,b){
         return new Date(b.pubDate) - new Date(a.pubDate);
@@ -77,6 +109,8 @@ Handlebars.registerHelper('moment', function (value, options) {
     UI Stuff
 
  *************** */
+const navigation = document.querySelector('.site-nav');
+
 let lastScrollPosition = 0;
 window.onscroll = () => {
     const newScrollPosition = window.scrollY;
