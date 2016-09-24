@@ -15,7 +15,7 @@ const precacheFiles = [
 
 	'./css/main.css',
 	'https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css',
-	'https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,300italic,700,900,900italic,700italic,400italic',
+	'https://fonts.googleapis.com/css?family=Inconsolata|Lora:400,400i,700|Source+Sans+Pro:400,700',
 
 	'./js/main.js',
 	'./js/utils.js',
@@ -24,9 +24,10 @@ const precacheFiles = [
 	'./js/latest.js',
 	'./js/saved.js',
 	'./js/templates.js',
-	'./js/lib/lib.js'
-];
+	'./js/lib/lib.js',
 
+	'./img/profile.png'
+];
 //toolbox.precache(precacheFiles);
 
 // Install and Activate events

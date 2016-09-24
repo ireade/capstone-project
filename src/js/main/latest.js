@@ -51,7 +51,6 @@ function fetchArticles() {
     return fetch(bitsofcode_rss_to_api_url)
         .then((response) => response.json())
         .then((response) => {
-            console.log("fetched");
             let articles = response.items;
             return articles.map((article) => new Article(article));
         })
@@ -83,6 +82,7 @@ function checkForNewArticles() {
     })
 }
 function updateArticlesInBackground() {
+    console.log("updateArticlesInBackground");
     checkForNewArticles()
         .then((newArticles) => {
             console.log(newArticles);

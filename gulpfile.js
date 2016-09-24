@@ -39,11 +39,15 @@ gulp.task('css', function() {
 ************* */
 
 var concat = require('gulp-concat');
+var order = require("gulp-order");
 var uglify = require('gulp-uglifyjs');
 var babel = require('gulp-babel');
 var jsFiles = 'src/js/**/*.js';
 
-gulp.task('js', function() {
+var bundleFiles = ['src/js/lib/*.js', 'src/js/utils/*.js', 'src/js/main/main.js'];
+
+
+gulp.task('js', ['templates'], function() {
 	gulp.src('src/js/lib/*.js')
 		.pipe(uglify())
 		.pipe(concat('lib.js'))
@@ -65,6 +69,15 @@ gulp.task('js', function() {
 		)
 		//.pipe(uglify())
 		.pipe(gulp.dest('public/js'));
+
+	// gulp.src(bundleFiles)
+	// 	.pipe(
+	// 		babel({ presets: ['es2015'] })
+	// 			.on('error', gutil.log)
+	// 	)
+	// 	.pipe(order(bundleFiles))
+	// 	.pipe(concat('bundle.js'))
+	// 	.pipe(gulp.dest('public/js'));
 
 	gulp.src('src/js/sw/*.js')
 		.pipe(gulp.dest('public'));
@@ -96,7 +109,7 @@ var concat = require('gulp-concat');
 var templateFiles = 'src/templates/*.hbs';
 
 gulp.task('templates', function () {
-	gulp.src(templateFiles)
+	return gulp.src(templateFiles)
 		.pipe(handlebars())
 		.pipe(wrap('Handlebars.template(<%= contents %>)'))
 		.pipe(declare({
@@ -132,7 +145,7 @@ gulp.task('watch', function() {
 	gulp.watch(sassFiles,['css']);
 	gulp.watch(jsFiles,['js']);
 	gulp.watch(htmlFiles,['html']);
-	gulp.watch(templateFiles, ['templates'])
+	gulp.watch(templateFiles, ['js'])
 });
 
 
