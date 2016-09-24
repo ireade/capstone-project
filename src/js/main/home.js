@@ -5,6 +5,8 @@ displayNavigationTemplate({isHome: true});
  Local Publish Time
 
  *************** */
+console.log("test");
+
 const setTimezoneLink = document.querySelector('.setTimezoneLink');
 const localTimeElement = document.querySelector('.localTime');
 
