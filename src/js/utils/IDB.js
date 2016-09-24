@@ -11,13 +11,11 @@ IDB.prototype._setupDB = function() {
           keyPath: 'guid'
         });
         ArticlesStore.createIndex('guid', 'guid');
-        ArticlesStore.createIndex('pubDate', 'pubDate');
 
         const BookmarksStore = upgradeDb.createObjectStore('Bookmarks', {
             keyPath: 'guid'
         });
         BookmarksStore.createIndex('guid', 'guid');
-        BookmarksStore.createIndex('pubDate', 'pubDate');
 
         const SettingsStore = upgradeDb.createObjectStore('Settings', {
             keyPath: 'setting'

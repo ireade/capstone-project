@@ -11,7 +11,7 @@ var setTimezoneLink = document.querySelector('.setTimezoneLink');
 var localTimeElement = document.querySelector('.localTime');
 
 function getLocalPublishTime(coords) {
-    var url = 'http://api.timezonedb.com/v2/get-time-zone?key=7KIGVA90V0ES&format=json&by=position&lat=' + coords.latitude + '&lng=' + coords.longitude;
+    var url = 'https://api.timezonedb.com/v2/get-time-zone?key=7KIGVA90V0ES&format=json&by=position&lat=' + coords.latitude + '&lng=' + coords.longitude;
     return new Promise(function (resolve) {
         return fetch(url).then(function (response) {
             return response.json();
@@ -85,10 +85,10 @@ function subscribeToNotifications() {
         setting: 'allowNotifications',
         value: true
     };
-
-    myNotificationsService.subscribe();
-    Database.add('Settings', setting);
-    notificationsButton.classList.toggle('btn-notifications--on');
+    myNotificationsService.subscribe().then(function () {
+        Database.add('Settings', setting);
+        notificationsButton.classList.toggle('btn-notifications--on');
+    });
 }
 
 function unsubscribeFromNotifications() {
@@ -96,8 +96,10 @@ function unsubscribeFromNotifications() {
         setting: 'allowNotifications',
         value: false
     };
-    Database.add('Settings', setting);
-    notificationsButton.classList.toggle('btn-notifications--on');
+    myNotificationsService.unsubscribe().then(function () {
+        Database.add('Settings', setting);
+        notificationsButton.classList.toggle('btn-notifications--on');
+    });
 }
 
 function toggleNotificationsSetting() {

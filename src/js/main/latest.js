@@ -93,7 +93,7 @@ function updateArticlesInBackground() {
 }
 
 /* Start */
-Database.retrieve('Articles', 'pubDate')
+Database.retrieve('Articles')
     .then((articlesFromDatabase) => {
         if (articlesFromDatabase.length == 0) return fetchArticles()
         didFetchArticlesFromDatabase = true;

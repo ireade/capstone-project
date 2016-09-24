@@ -9,7 +9,7 @@ const setTimezoneLink = document.querySelector('.setTimezoneLink');
 const localTimeElement = document.querySelector('.localTime');
 
 function getLocalPublishTime(coords) {
-    const url = `http://api.timezonedb.com/v2/get-time-zone?key=7KIGVA90V0ES&format=json&by=position&lat=${coords.latitude}&lng=${coords.longitude}`;
+    const url = `https://api.timezonedb.com/v2/get-time-zone?key=7KIGVA90V0ES&format=json&by=position&lat=${coords.latitude}&lng=${coords.longitude}`;
     return new Promise((resolve) => {
         return fetch(url)
             .then(response => response.json())
@@ -82,10 +82,11 @@ function subscribeToNotifications() {
         setting: 'allowNotifications',
         value: true
     }
-
-    myNotificationsService.subscribe();
-    Database.add('Settings', setting);
-    notificationsButton.classList.toggle('btn-notifications--on');
+    myNotificationsService.subscribe()
+        .then(() => {
+            Database.add('Settings', setting);
+            notificationsButton.classList.toggle('btn-notifications--on');
+        });
 }
 
 function unsubscribeFromNotifications() {
@@ -93,8 +94,11 @@ function unsubscribeFromNotifications() {
         setting: 'allowNotifications',
         value: false
     }
-    Database.add('Settings', setting);
-    notificationsButton.classList.toggle('btn-notifications--on');
+    myNotificationsService.unsubscribe()
+        .then(() => {
+            Database.add('Settings', setting);
+            notificationsButton.classList.toggle('btn-notifications--on');
+        })
 }
 
 function toggleNotificationsSetting() {

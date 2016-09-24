@@ -2,7 +2,7 @@ displayNavigationTemplate({isSaved: true});
 
 const excerptsEl = document.getElementById('excerpts');
 
-Database.retrieve('Bookmarks', 'pubDate')
+Database.retrieve('Bookmarks')
     .then((bookmarkedArticles) => {
         document.querySelector('.articles-count').innerHTML = bookmarkedArticles.length;
         return Promise.resolve(bookmarkedArticles);
