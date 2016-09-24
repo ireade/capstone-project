@@ -34,3 +34,17 @@ self.addEventListener('fetch', (event) => {
 		caches.match(event.request).then( (response) => response || fetch(event.request) )
 	);
 });
+
+// Push notifications
+self.addEventListener('push', (event) => {
+	console.log('Push message received', event);
+
+	const title = 'New article on bitsofco.de';
+	event.waitUntil(
+		self.registration.showNotification(title, {
+			body: 'The Message',
+			icon: './assets/img/icon-128.png',
+			tag: 'my-tag'
+		})
+	);
+});
