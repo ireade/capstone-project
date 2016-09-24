@@ -80,19 +80,35 @@ function getNotificationsSetting() {
     });
 }
 
+function subscribeToNotifications() {
+    var setting = {
+        setting: 'allowNotifications',
+        value: true
+    };
+
+    myNotificationsService.subscribe();
+    Database.add('Settings', setting);
+    notificationsButton.classList.toggle('btn-notifications--on');
+}
+
+function unsubscribeFromNotifications() {
+    var setting = {
+        setting: 'allowNotifications',
+        value: false
+    };
+    Database.add('Settings', setting);
+    notificationsButton.classList.toggle('btn-notifications--on');
+}
+
 function toggleNotificationsSetting() {
     getNotificationsSetting().then(function (notificationsSetting) {
         if (notificationsSetting.length === 0) {
-            notificationsSetting = { value: false };
-        } else {
-            notificationsSetting = notificationsSetting[0];
+            subscribeToNotifications();
+        } else if (notificationsSetting[0].value === false) {
+            subscribeToNotifications();
+        } else if (notificationsSetting[0].value === true) {
+            unsubscribeFromNotifications();
         }
-        var newSetting = {
-            setting: 'allowNotifications',
-            value: !notificationsSetting.value
-        };
-        Database.add('Settings', newSetting);
-        notificationsButton.classList.toggle('btn-notifications--on');
     });
 }
 

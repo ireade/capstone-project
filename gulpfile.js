@@ -44,41 +44,45 @@ var uglify = require('gulp-uglifyjs');
 var babel = require('gulp-babel');
 var jsFiles = 'src/js/**/*.js';
 
-var bundleFiles = ['src/js/lib/*.js', 'src/js/utils/*.js', 'src/js/main/main.js'];
 
-
-gulp.task('js', ['templates'], function() {
-	gulp.src('src/js/lib/*.js')
+gulp.task('preJS-lib', function() {
+	return gulp.src('src/js/lib/*.js')
 		.pipe(uglify())
-		.pipe(concat('lib.js'))
-		.pipe(gulp.dest('public/js/lib/'));
-
-	gulp.src('src/js/utils/*.js')
+		.pipe(concat('1_lib.js'))
+		.pipe(gulp.dest('tmp/'));
+})
+gulp.task('preJS-utils', function() {
+	return gulp.src('src/js/utils/*.js')
 		.pipe(
 			babel({ presets: ['es2015'] })
 				.on('error', gutil.log)
 		)
 		.pipe(uglify())
-		.pipe(concat('utils.js'))
-		.pipe(gulp.dest('public/js'));
+		.pipe(concat('2_utils.js'))
+		.pipe(gulp.dest('tmp/'));
+})
+gulp.task('preJS-main', function() {
+	return gulp.src('src/js/main/main.js')
+		.pipe(
+			babel({ presets: ['es2015'] })
+				.on('error', gutil.log)
+		)
+		.pipe(uglify())
+		.pipe(concat('4_main.js'))
+		.pipe(gulp.dest('tmp/'));
+})
 
-	gulp.src('src/js/main/*.js')
+gulp.task('js', ['preJS-lib', 'preJS-utils', 'templates', 'preJS-main'], function() {
+	gulp.src('tmp/*.js')
+		.pipe(concat('bundle.js'))
+		.pipe(gulp.dest('public/js/'));
+	gulp.src(['src/js/main/article.js', 'src/js/main/home.js', 'src/js/main/latest.js', 'src/js/main/saved.js'])
 		.pipe(
 			babel({ presets: ['es2015'] })
 				.on('error', gutil.log)
 		)
 		//.pipe(uglify())
 		.pipe(gulp.dest('public/js'));
-
-	// gulp.src(bundleFiles)
-	// 	.pipe(
-	// 		babel({ presets: ['es2015'] })
-	// 			.on('error', gutil.log)
-	// 	)
-	// 	.pipe(order(bundleFiles))
-	// 	.pipe(concat('bundle.js'))
-	// 	.pipe(gulp.dest('public/js'));
-
 	gulp.src('src/js/sw/*.js')
 		.pipe(gulp.dest('public'));
 });
@@ -116,8 +120,8 @@ gulp.task('templates', function () {
 			namespace: 'MyApp.templates',
 			noRedeclare: true, // Avoid duplicate declarations
 		}))
-		.pipe(concat('templates.js'))
-		.pipe(gulp.dest('public/js/'));
+		.pipe(concat('3_templates.js'))
+		.pipe(gulp.dest('tmp/'));
 });
 
 
