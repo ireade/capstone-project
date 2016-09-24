@@ -105,14 +105,14 @@
 	}
 
 	span {
-		padding-top: 2px;
+		padding-top: 0;
 	}
 
 	transition: transform 1s;
-}
+}.site-nav:not(.fixed).hidden {
 
-.site-nav.hidden {
-	transform: translateY(100%);
+
+	 	transform: translateY(100%);
 }
 
 

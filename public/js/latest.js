@@ -62,6 +62,11 @@ function updateArticlesInBackground() {
         clearDatabase();
     });
 }
+function displayArticles(articles) {
+    var html = MyApp.templates.excerpt({ items: articles });
+    document.getElementById('excerpts').innerHTML = html;
+    document.querySelector('.site-main').insertAdjacentHTML('beforeEnd', '<a href="https://bitsofco.de" class="read-more-link">Read more on bitsofco.de <i class="fa fa-external-link"></i></a>');
+}
 
 /* Start */
 if ('serviceWorker' in navigator) {
@@ -72,8 +77,7 @@ if ('serviceWorker' in navigator) {
         return Promise.resolve(articlesFromDatabase);
     }).then(function (articles) {
         Articles = sortedArticles(articles);
-        var html = MyApp.templates.excerpt({ items: articles });
-        document.getElementById('excerpts').innerHTML = html;
+        displayArticles(Articles);
         return Promise.resolve();
     }).then(function () {
         if (didFetchArticlesFromDatabase) updateArticlesInBackground();
@@ -82,12 +86,10 @@ if ('serviceWorker' in navigator) {
 
     fetchArticles(false).then(function (articles) {
         Articles = sortedArticles(articles);
-        var html = MyApp.templates.excerpt({ items: articles });
-        document.getElementById('excerpts').innerHTML = html;
+        displayArticles(Articles);
         return Promise.resolve();
     }).then(function () {
         var bookmarkButtons = Array.from(document.querySelectorAll('.btn-bookmark'));
-        console.log(bookmarkButtons);
         bookmarkButtons.map(function (button) {
             button.disabled = true;
         });
