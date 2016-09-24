@@ -1,10 +1,6 @@
 // Service Worker Toolbox
 importScripts('js/lib/sw-toolbox/sw-toolbox.js');
 
-// Offline Google Analytics
-importScripts('js/lib/sw-offline-google-analytics.js');
-//goog.offlineGoogleAnalytics.initialize();
-
 // Files to precache
 const precacheFiles = [
 	'./',
@@ -12,19 +8,17 @@ const precacheFiles = [
 	'./article.html',
 	'./latest.html',
 	'./saved.html',
+	'./404.html',
 
 	'./css/main.css',
 	'https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css',
 	'https://fonts.googleapis.com/css?family=Inconsolata|Lora:400,400i,700|Source+Sans+Pro:400,700',
 
-	'./js/main.js',
-	'./js/utils.js',
+	'./js/bundle.js',
 	'./js/article.js',
 	'./js/home.js',
 	'./js/latest.js',
 	'./js/saved.js',
-	'./js/templates.js',
-	'./js/lib/lib.js',
 
 	'./img/profile.png'
 ];

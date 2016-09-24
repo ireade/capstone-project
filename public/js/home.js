@@ -7,7 +7,6 @@ displayNavigationTemplate({ isHome: true });
  Local Publish Time
 
  *************** */
-console.log("test");
 
 var setTimezoneLink = document.querySelector('.setTimezoneLink');
 var localTimeElement = document.querySelector('.localTime');
@@ -15,7 +14,6 @@ var localTimeElement = document.querySelector('.localTime');
 function getLocalPublishTime(coords) {
 
     var url = 'https://api.timezonedb.com/v2/get-time-zone?key=7KIGVA90V0ES&format=json&by=position&lat=' + coords.latitude + '&lng=' + coords.longitude;
-    console.log(url);
     return new Promise(function (resolve) {
         return fetch(url).then(function (response) {
             return response.json();
