@@ -7,6 +7,5 @@ Database.retrieve('Articles', 'guid', guid)
         const article = articles[0];
         const html = MyApp.templates.article(article);
         document.getElementById('article').innerHTML = html;
-        console.log(article);
     })
 
