@@ -89,7 +89,7 @@ a.btn {
 }
 
 
-/* Notifications Buttson */
+/* Notifications Buttons */
 
 .btn-notifications {
   .notificationsOn {
@@ -104,6 +104,18 @@ a.btn {
   .notificationsOn {
     display: block;
   }
+}
+
+
+/* Link Buttons */
+
+button.a {
+  border: 0;
+  background: 0;
+  text-decoration: underline;
+  padding: 0 2px;
+  margin: 0;
+  cursor: pointer;
 }
 
 

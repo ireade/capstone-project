@@ -43,7 +43,6 @@ function toggleBookmark(buttonElement) {
   General Helper Functions
 
  *************** */
-
 function sortedArticles(unsortedArticles) {
     return unsortedArticles.sort(function(a,b){
         return new Date(b.pubDate) - new Date(a.pubDate);
@@ -55,14 +54,9 @@ function sortedArticles(unsortedArticles) {
 Handlebars Helpers
 
  *************** */
-
 Handlebars.registerHelper('excerpt', function (excerpt, options) {
-
     const lastParagraphIndex = excerpt.lastIndexOf("</p>");
-
     excerpt = excerpt.slice(0, lastParagraphIndex) + '....' + excerpt.slice(lastParagraphIndex);
-
-
     return excerpt;
 });
 
@@ -78,21 +72,11 @@ Handlebars.registerHelper('moment', function (value, options) {
 });
 
 
-
 /* **************
 
     UI Stuff
 
  *************** */
-
-const navigation = document.querySelector('.site-nav');
-
-function displayNavigationTemplate(option) {
-    navigation.innerHTML = MyApp.templates.nav(option);
-}
-
-
-
 let lastScrollPosition = 0;
 window.onscroll = () => {
     const newScrollPosition = window.scrollY;
@@ -124,7 +108,6 @@ if ( 'serviceWorker' in navigator ) {
         .serviceWorker
         .register('./service-worker.js')
         .then(function(reg) {
-            console.log('Service Worker Registered', reg);
             myNotificationsService = new NotificationsService(reg);
         })
         .catch(function(err) {

@@ -1,7 +1,5 @@
 'use strict';
 
-displayNavigationTemplate({ isHome: true });
-
 /* **************
 
  Local Publish Time

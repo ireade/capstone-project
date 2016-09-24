@@ -1,7 +1,5 @@
 'use strict';
 
-displayNavigationTemplate({ isSaved: true });
-
 var excerptsEl = document.getElementById('excerpts');
 
 Database.retrieve('Bookmarks').then(function (bookmarkedArticles) {

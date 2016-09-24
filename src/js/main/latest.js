@@ -1,5 +1,3 @@
-displayNavigationTemplate({isLatest: true});
-
 /* Classes and Variables */
 class Article {
     constructor(options) {
@@ -82,10 +80,10 @@ function checkForNewArticles() {
     })
 }
 function updateArticlesInBackground() {
-    console.log("updateArticlesInBackground");
+    //console.log("updateArticlesInBackground");
     checkForNewArticles()
         .then((newArticles) => {
-            console.log(newArticles);
+            //console.log(newArticles);
             if ( newArticles.length === 0 ) return
             Articles.unshift(newArticles);
             clearDatabase();

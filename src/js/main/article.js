@@ -1,5 +1,3 @@
-displayNavigationTemplate();
-
 const guid = window.location.href.split('?guid=')[1];
 
 Database.retrieve('Articles', 'guid', guid)

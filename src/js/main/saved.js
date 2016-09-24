@@ -1,5 +1,3 @@
-displayNavigationTemplate({isSaved: true});
-
 const excerptsEl = document.getElementById('excerpts');
 
 Database.retrieve('Bookmarks')

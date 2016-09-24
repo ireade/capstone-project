@@ -1,7 +1,5 @@
 'use strict';
 
-displayNavigationTemplate();
-
 var guid = window.location.href.split('?guid=')[1];
 
 Database.retrieve('Articles', 'guid', guid).then(function (articles) {

@@ -2,10 +2,7 @@
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-displayNavigationTemplate({ isLatest: true });
-
 /* Classes and Variables */
-
 var Article = function Article(options) {
     _classCallCheck(this, Article);
 
@@ -96,9 +93,9 @@ function checkForNewArticles() {
     });
 }
 function updateArticlesInBackground() {
-    console.log("updateArticlesInBackground");
+    //console.log("updateArticlesInBackground");
     checkForNewArticles().then(function (newArticles) {
-        console.log(newArticles);
+        //console.log(newArticles);
         if (newArticles.length === 0) return;
         Articles.unshift(newArticles);
         clearDatabase();
