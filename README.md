@@ -14,3 +14,11 @@ You must create your very own web application that functions just as a native mo
 - **Home Screen Installable** - The application is installable to user’s home screen.
 - **Built for the Progressive Web** - Application uses native features, like push notifications, Bluetooth, geolocation, as appropriate for the application.
 - **App Delivery: Build Process** - App includes a build process (such as Grunt or Gulp). Assets are minimized and concatenated as appropriate.
+
+## My Project - app.bitsofco.de
+
+An application for my blog, bitsofco.de.
+
+Scored **91/100** on Lighthouse -
+
+![Lighthouse 91/100 Score](lighthouse.png)
