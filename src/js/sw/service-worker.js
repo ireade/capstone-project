@@ -22,7 +22,7 @@ const precacheFiles = [
 
     './img/profile.png'
 ];
-//toolbox.precache(precacheFiles);
+toolbox.precache(precacheFiles);
 
 // Install and Activate events
 self.addEventListener('install', (event) => event.waitUntil(self.skipWaiting()));
@@ -42,8 +42,8 @@ self.addEventListener('push', (event) => {
     event.waitUntil(
         self.registration.showNotification(title, {
             body: 'Click to read the latest article',
-            icon: './assets/img/icon-128.png',
-            tag: 'my-tag'
+            icon: './img/icon128.png',
+            tag: 'new-article'
         })
     );
 });
