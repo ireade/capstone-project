@@ -1,4 +1,4 @@
-const guid = window.location.href.split('?guid=')[1];
+const guid = sessionStorage.getItem('articleGuid');
 
 if ('serviceWorker' in navigator) {
 

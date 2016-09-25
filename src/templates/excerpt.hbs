@@ -16,10 +16,12 @@
         {{{excerpt description}}}
     </div>
     <div class="excerpt__footer">
-        <a href="article.html?guid={{guid}}" class="btn btn-default">
+        <button class="btn btn-default"
+                data-guid="{{guid}}"
+                onclick="goToArticle(this)">
             <i class="fa fa-ellipsis-h"></i>
             <span>Read</span>
-        </a>
+        </button>
 
         <button class="btn btn-default btn-bookmark {{#if isBookmarked}}btn-bookmark--bookmarked{{/if}}"
                 data-guid="{{guid}}"

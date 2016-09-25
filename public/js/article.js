@@ -1,6 +1,6 @@
 'use strict';
 
-var guid = window.location.href.split('?guid=')[1];
+var guid = sessionStorage.getItem('articleGuid');
 
 if ('serviceWorker' in navigator) {
 

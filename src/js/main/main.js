@@ -2,6 +2,19 @@ const bitsofcode_rss_to_api_url = 'https://rss2json.com/api.json?rss_url=https:/
 const Database = new IDB();
 let myNotificationsService;
 
+
+function goToArticle(anchorElement) {
+    const guid = anchorElement.getAttribute('data-guid');
+    sessionStorage.setItem('articleGuid', guid);
+
+    if ( window.location.href.indexOf('localhost') > -1 ) {
+        window.location.href = 'http://localhost:7200/public/article.html';
+    } else {
+        window.location.href = 'https://app.bitsofco.de/article.html';
+    }
+    return false;
+}
+
 /* **************
 
     Bookmark Article
