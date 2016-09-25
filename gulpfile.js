@@ -81,7 +81,6 @@ gulp.task('js', ['preJS-lib', 'preJS-utils', 'templates', 'preJS-main'], functio
 			babel({ presets: ['es2015'] })
 				.on('error', gutil.log)
 		)
-		//.pipe(uglify())
 		.pipe(gulp.dest('public/js'));
 	gulp.src('src/js/sw/*.js')
 		.pipe(gulp.dest('public'));
