@@ -5,7 +5,7 @@
 	margin: 0 auto;
 	width: 90%;
 	max-width: 500px;
-	overflow-x: scroll;
+	overflow-x: hidden; // Changed to `hidden` to avoid irrelevant horizontal scrollbars
 }
 .section {
 	margin-bottom: 40px;
