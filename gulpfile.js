@@ -95,10 +95,14 @@ gulp.task('js', ['preJS-lib', 'preJS-utils', 'templates', 'preJS-main'], functio
 ************* */
 
 var minifyHTML = require('gulp-minify-html');
+var htmlreplace = require('gulp-html-replace');
 var htmlFiles = 'src/*.html';
 
 gulp.task('html', function() {
 	return gulp.src(htmlFiles)
+		.pipe(htmlreplace({
+			'js': './js/bundle.js?v=4'
+		}))
 		.pipe(minifyHTML({ empty: true }))
 		.pipe(gulp.dest('public'));
 });
@@ -133,7 +137,7 @@ var connect = require('gulp-connect');
 
 gulp.task('connect', function() {
 	connect.server({
-		port: 7200
+		port: 7210
 	});
 });
 
