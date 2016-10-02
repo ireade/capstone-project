@@ -101,7 +101,7 @@ var htmlFiles = 'src/*.html';
 gulp.task('html', function() {
 	return gulp.src(htmlFiles)
 		.pipe(htmlreplace({
-			'js': './js/bundle.js?v=5'
+			'js': './js/bundle.js'
 		}))
 		.pipe(minifyHTML({ empty: true }))
 		.pipe(gulp.dest('public'));
@@ -137,7 +137,7 @@ var connect = require('gulp-connect');
 
 gulp.task('connect', function() {
 	connect.server({
-		port: 7210
+		port: 7230
 	});
 });
 
