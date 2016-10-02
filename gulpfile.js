@@ -101,7 +101,7 @@ var htmlFiles = 'src/*.html';
 gulp.task('html', function() {
 	return gulp.src(htmlFiles)
 		.pipe(htmlreplace({
-			'js': './js/bundle.js?v=4'
+			'js': './js/bundle.js?v=5'
 		}))
 		.pipe(minifyHTML({ empty: true }))
 		.pipe(gulp.dest('public'));
