@@ -1,8 +1,8 @@
 # Capstone Project
 
-Project #5 for the [Udacity Senior Web Developer Nanodegree](https://www.udacity.com/course/senior-web-developer-nanodegree--nd802)
+Project #5 (and final!) for the [Udacity Senior Web Developer Nanodegree](https://www.udacity.com/course/senior-web-developer-nanodegree--nd802)
 
-<!-- Passed on ??? 🔥 -->
+Passed on 3 October 2016 🔥
 
 ## Project Description
 
