@@ -21,7 +21,7 @@ You must create your very own web application that functions just as a native mo
 
 ## My Project - app.bitsofco.de
 
-An application for my blog, bitsofco.de.
+An application for my blog, [bitsofco.de](https://bitsofco.de).
 
 Scored **91/100** on Lighthouse -
 
